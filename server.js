@@ -19,5 +19,28 @@ uwclient.get('/courses/{course_subject}/{course_number}/schedule',
 	course_number : '246'
 },
 function(err,res){
+//	console.log(res);
+});
+
+uwclient.get('/courses/{course_id}.{format}', 
+{
+	course_id : '004426',
+	format : 'json'
+},
+function(err,res){
+//	console.log(res);
+});
+
+uwclient.get('/courses.{format}', 
+{
+	course_id : '004426',
+	format : 'json'
+},
+function(err,res){
 	console.log(res);
+	for (var i in res['data']){
+		if (res['data'][i]['subject']=='CS')
+			console.log(res['data'][i]['title']);
+	}
+//	console.log(res['meta']);
 });
