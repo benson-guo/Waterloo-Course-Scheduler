@@ -6,11 +6,14 @@ var uwclient = new uwaterlooApi({
 	API_KEY : config.api_key
 });
 
-var port = 9000;
-http.createServer(function (req,res){
+var portTest = 9000;
+var port = 8080;
+var server = http.createServer(function (req,res){
 	res.writeHead(200,{'Content-Type':'text/plain'});
 	res.end('Hello world\n');
-}).listen(port);
+})
+//server.listen(portTest);
+server.listen(port, "localhost");
 
 console.log('Listening',port);
 uwclient.get('/courses/{course_subject}/{course_number}/schedule',
@@ -24,23 +27,40 @@ function(err,res){
 
 uwclient.get('/courses/{course_id}.{format}',
 {
-	course_id : '004426',
+	course_id : '007407',
 	format : 'json'
 },
 function(err,res){
-//	console.log(res);
+	if (res){
+		console.log(res['data']['terms_offered']);
+		// subjects[nextSub][nextCN]['terms_offered']=res['data']['terms_offered'];
+	}
+	else{
+		// subjects[nextSub][nextCN]['terms_offered']=[];
+		console.log("Not Found");
+	}
 });
+
+var subjects={}
 
 uwclient.get('/courses.{format}',
 {
-	course_id : '004426',
 	format : 'json'
 },
 function(err,res){
-	console.log(res);
+	// console.log(res);
 	for (var i in res['data']){
-		if (res['data'][i]['subject']=='CS')
-			console.log(res['data'][i]['title']);
+		var nextSub=res['data'][i]['subject'];
+		var nextCN=res['data'][i]['catalog_number'];
+		if (!(nextSub in subjects)){
+			subjects[nextSub]={};
+		}
+		if (!(nextCN in subjects[nextSub])){
+			subjects[nextSub][nextCN]={};
+		}
+		subjects[nextSub][nextCN]['title']=res['data'][i]['title'];
+		subjects[nextSub][nextCN]['course_id']=res['data'][i]['course_id'];
 	}
-//	console.log(res['meta']);
+	// console.log(subjects);
 });
+
