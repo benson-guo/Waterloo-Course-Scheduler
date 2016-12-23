@@ -13,7 +13,7 @@ http.createServer(function (req,res){
 }).listen(port);
 
 console.log('Listening',port);
-uwclient.get('/courses/{course_subject}/{course_number}/schedule', 
+uwclient.get('/courses/{course_subject}/{course_number}/schedule',
 {
 	course_subject : 'CS',
 	course_number : '246'
@@ -22,7 +22,7 @@ function(err,res){
 //	console.log(res);
 });
 
-uwclient.get('/courses/{course_id}.{format}', 
+uwclient.get('/courses/{course_id}.{format}',
 {
 	course_id : '004426',
 	format : 'json'
@@ -31,7 +31,7 @@ function(err,res){
 //	console.log(res);
 });
 
-uwclient.get('/courses.{format}', 
+uwclient.get('/courses.{format}',
 {
 	course_id : '004426',
 	format : 'json'
