@@ -64,3 +64,4 @@ function(err,res){
 	// console.log(subjects);
 });
 
+var response = require('./query.js');
