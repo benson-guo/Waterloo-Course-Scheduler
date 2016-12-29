@@ -41,6 +41,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/cssFiles', express.static(__dirname+'/css'));
+app.use('/jsFiles', express.static(__dirname+'/js'));
 
 app.get('/', function(req,res){
 	res.sendFile('index.html',{root: path.join(__dirname, './html')});
