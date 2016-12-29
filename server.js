@@ -55,10 +55,10 @@ app.post('/', function(req,res){
 	try{
 		var requestedID = subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['course_id'];
 		response.data.getOfferings(uwclient,requestedID,function(data){
-		console.log(data);
+			res.end(JSON.stringify(data));
 		});
 	} catch (err) {
-		console.log('No information found on '+req.body.courseSubject.toUpperCase()+req.body.courseCode.toUpperCase());
+		res.end('No information found on '+req.body.courseSubject.toUpperCase()+req.body.courseCode.toUpperCase()+'.');
 	}
 });
 
