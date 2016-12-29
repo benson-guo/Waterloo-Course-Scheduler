@@ -16,7 +16,6 @@ uwclient.get('/courses.{format}',
 	format : 'json'
 },
 function(err,res){
-	// console.log(res);
 	for (var i in res['data']){
 		var nextSub=res['data'][i]['subject'];
 		var nextCN=res['data'][i]['catalog_number'];
@@ -29,11 +28,9 @@ function(err,res){
 		subjects[nextSub][nextCN]['title']=res['data'][i]['title'];
 		subjects[nextSub][nextCN]['course_id']=res['data'][i]['course_id'];
 	}
-	// console.log(subjects);
 });
 
 var response = require('./query.js');
-// console.log(response.data.getOfferings(uwclient,'004404'));
 
 var express = require('express');
 var path = require('path');
@@ -71,7 +68,7 @@ app.get(/^(.+)$/, function(req,res){
 });
 
 var listen = function(){
-	console.log('Listening');
+	console.log('Listening!');
 }
 
 app.listen(1337,listen);
