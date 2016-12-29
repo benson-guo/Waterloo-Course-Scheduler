@@ -48,8 +48,8 @@ app.get('/', function(req,res){
 	// console.log(subjects);
 });
 
-app.post('/', function(req,res){
-	//res.sendFile('index.html',{root: path.join(__dirname, './html')});
+app.post('/reqoff', function(req,res){
+	res.setHeader('Content-Type', 'application/json');
 	try{
 		var requestedID = subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['course_id'];
 		response.data.getOfferings(uwclient,requestedID,function(data){
