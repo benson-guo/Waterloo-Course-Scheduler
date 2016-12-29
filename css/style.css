@@ -1,8 +1,40 @@
-h1 {
-	font-weight: bold;
-  	font-size: 32px;
+#o1 {
+    background-color: #cc3300;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+    visibility: hidden;
 }
-h2 {
-	font-weight: bold;
-  	font-size: 20px;
+#o2 {
+    background-color: #ff6600;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+    visibility: hidden;
+}
+#o3 {
+    background-color: #3399ff;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+    visibility: hidden;
+}
+#o4 {
+    background-color: #00cc00;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+    visibility: hidden;
 }
