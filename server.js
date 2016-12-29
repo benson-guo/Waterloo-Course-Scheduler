@@ -52,9 +52,14 @@ app.get('/', function(req,res){
 
 app.post('/', function(req,res){
 	//res.sendFile('index.html',{root: path.join(__dirname, './html')});
-	var requestedID = subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['course_id'];
-	res.end(JSON.stringify(response.data.getOfferings(uwclient,requestedID)));
-	// res.end(req.body.courseSubject.toUpperCase()+" "+req.body.courseCode.toUpperCase());
+	try{
+		var requestedID = subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['course_id'];
+		response.data.getOfferings(uwclient,requestedID,function(data){
+		console.log(data);
+		});
+	} catch (err) {
+		console.log('No information found on '+req.body.courseSubject.toUpperCase()+req.body.courseCode.toUpperCase());
+	}
 });
 
 app.get(/^(.+)$/, function(req,res){
