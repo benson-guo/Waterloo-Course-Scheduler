@@ -9,16 +9,6 @@ var uwclient = new uwaterlooApi({
 var portTest = 9000;
 var port = 8080;
 
-var engine = function (req,res){
-	res.writeHead(200,{'Content-Type':'text/plain'});
-	res.end('Hello world\n');
-}
-
-var server = http.createServer(engine);
-server.listen(portTest);
-
-console.log('Listening',port);
-
 var subjects={}
 
 uwclient.get('/courses.{format}',
@@ -49,15 +39,22 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 var app = express();
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/cssFiles', express.static(__dirname+'/css'));
 
 app.get('/', function(req,res){
 	res.sendFile('index.html',{root: path.join(__dirname, './html')});
+	// console.log(subjects);
 });
 
 app.post('/', function(req,res){
-	res.sendFile('index.html',{root: path.join(__dirname, './html')});
+	//res.sendFile('index.html',{root: path.join(__dirname, './html')});
+	var requestedID = subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['course_id'];
+	res.end(JSON.stringify(response.data.getOfferings(uwclient,requestedID)));
+	// res.end(req.body.courseSubject.toUpperCase()+" "+req.body.courseCode.toUpperCase());
 });
 
 app.get(/^(.+)$/, function(req,res){
