@@ -56,6 +56,10 @@ app.get('/', function(req,res){
 	res.sendFile('index.html',{root: path.join(__dirname, './html')});
 });
 
+app.post('/', function(req,res){
+	res.sendFile('index.html',{root: path.join(__dirname, './html')});
+});
+
 app.get(/^(.+)$/, function(req,res){
 	if (fs.existsSync(__dirname+'/html/'+req.params[0]+'.html')) {
 		res.sendFile(req.params[0]+'.html', {root: path.join(__dirname, './html')});
