@@ -47,12 +47,21 @@ var response = require('./query.js');
 
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 var app = express();
 
 app.use('/cssFiles', express.static(__dirname+'/css'));
 
 app.get('/', function(req,res){
 	res.sendFile('index.html',{root: path.join(__dirname, './html')});
+});
+
+app.get(/^(.+)$/, function(req,res){
+	if (fs.existsSync(__dirname+'/html/'+req.params[0]+'.html')) {
+		res.sendFile(req.params[0]+'.html', {root: path.join(__dirname, './html')});
+	} else {
+		res.status(404).send('Not Found');
+	}
 });
 
 var listen = function(){
