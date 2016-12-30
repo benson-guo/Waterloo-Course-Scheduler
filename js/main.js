@@ -26,3 +26,27 @@ $('form').on('submit',function(e){
         }
     });
 });
+
+$.ajax({
+    type     : "POST",
+    cache    : false,
+    url      : '/reqsub',
+    success  : function(data) {
+        data.sort();
+        for(var x=2; x<=data.length; x++){
+            $('#subjectSelect').append($('<option>', {
+                value: x,
+                text: data[x-2]
+            }));
+        }
+    }
+});
+
+
+// $('#subjectSelect')
+//     .find('option')
+//     .remove()
+//     .end()
+//     .append('<option value="whatever">text</option>')
+//     .val('whatever')
+// ;

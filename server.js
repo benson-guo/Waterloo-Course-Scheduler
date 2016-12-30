@@ -62,6 +62,18 @@ app.post('/reqoff', function(req,res){
 	}
 });
 
+app.post('/reqsub', function(req,res){
+	res.setHeader('Content-Type', 'application/json');
+	var subs=[];
+	for (sub in subjects)
+		subs.push(sub);
+	try{
+		res.end(JSON.stringify(subs));
+	} catch (err) {
+		res.end('No information found on '+subj+subc+'.');
+	}
+});
+
 app.get(/^(.+)$/, function(req,res){
 	if (fs.existsSync(__dirname+'/html/'+req.params[0]+'.html')) {
 		res.sendFile(req.params[0]+'.html', {root: path.join(__dirname, './html')});
