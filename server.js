@@ -53,12 +53,12 @@ app.get('/', function(req,res){
 
 app.post('/reqoff', function(req,res){
 	res.setHeader('Content-Type', 'application/json');
+	var subj=req.body.courseSubject.toUpperCase();
+	var subc=req.body.courseCode.toUpperCase();
 	try{
-		var requestedID = subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['course_id'];
-		console.log(subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['terms_offered']);
-		res.end(JSON.stringify(subjects[req.body.courseSubject.toUpperCase()][req.body.courseCode.toUpperCase()]['terms_offered']));
+		res.end(JSON.stringify(subjects[subj][subc]['terms_offered']));
 	} catch (err) {
-		res.end('No information found on '+req.body.courseSubject.toUpperCase()+req.body.courseCode.toUpperCase()+'.');
+		res.end('No information found on '+subj+subc+'.');
 	}
 });
 
