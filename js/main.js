@@ -32,7 +32,6 @@ $.ajax({
     cache    : false,
     url      : '/reqsub',
     success  : function(data) {
-        data.sort();
         for(var x=2; x<=data.length; x++){
             $('#subjectSelect').append($('<option>', {
                 value: x,
@@ -42,11 +41,31 @@ $.ajax({
     }
 });
 
-
-// $('#subjectSelect')
-//     .find('option')
-//     .remove()
-//     .end()
-//     .append('<option value="whatever">text</option>')
-//     .val('whatever')
-// ;
+$("#subjectSelect").change(function(){
+    console.log($('#subjectSelect :selected').text());
+    $('#courseSelect')
+    .find('option')
+    .remove()
+    .end()
+    $('#courseSelect').append($('<option>', {
+        disabled : 'disabled',
+        value: 1,
+        text: 'Choose Course'
+    }))
+    $("#courseSelect").val("1");
+    $.ajax({
+        type     : "POST",
+        cache    : false,
+        url      : '/reqcourses',
+        data     : { 'subj' : $('#subjectSelect :selected').text()},
+        success  : function(data) {
+            console.log(data);
+            for(var x=2; x<=data['courses'].length+1; x++){
+                $('#courseSelect').append($('<option>', {
+                    value: x,
+                    text: data['courses'][x-2]+' - '+data['titles'][x-2]
+                }));
+            }
+        }
+    });
+});

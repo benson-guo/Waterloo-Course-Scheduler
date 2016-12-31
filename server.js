@@ -67,11 +67,29 @@ app.post('/reqsub', function(req,res){
 	var subs=[];
 	for (sub in subjects)
 		subs.push(sub);
-	try{
-		res.end(JSON.stringify(subs));
-	} catch (err) {
-		res.end('No information found on '+subj+subc+'.');
+	subs.sort();
+	res.end(JSON.stringify(subs));
+});
+
+app.post('/reqcourses', function(req,res){
+	res.setHeader('Content-Type', 'application/json');
+	var cours=[];
+	var subj=req.body.subj;
+	for (cour in subjects[subj])
+		cours.push(cour);
+	cours.sort();
+	coursName=[];
+	for(var x=0; x<cours.length; x++){
+		try{
+			coursName.push(subjects[subj][cours[x]]['title']);
+		} catch(err){
+			coursName.push('');
+		}
 	}
+	var data={};
+	data['courses']=cours;
+	data['titles']=coursName;
+	res.end(JSON.stringify(data));
 });
 
 app.get(/^(.+)$/, function(req,res){
