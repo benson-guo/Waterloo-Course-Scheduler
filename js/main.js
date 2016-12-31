@@ -97,3 +97,7 @@ $("#courseSelect").change(function(){
         }
     });
 });
+
+$(".deleteMe").on("click", function(){
+   $(this).closest("td").remove();
+});
