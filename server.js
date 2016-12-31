@@ -92,6 +92,25 @@ app.post('/reqcourses', function(req,res){
 	res.end(JSON.stringify(data));
 });
 
+app.post('/reqdescript', function(req,res){
+	res.setHeader('Content-Type', 'application/json');
+	try{
+		var requestedID = subjects[req.body.courseSubject][req.body.courseCode]['course_id'];
+		response.data.getOfferings(uwclient,requestedID,function(data){
+			console.log(data);
+			if (data['prerequisites']==null)
+                data['prerequisites']='N/A';
+            if (data['antirequisites']==null)
+                data['antirequisites']='N/A';
+            if (data['corequisites']==null)
+                data['corequisites']='N/A';
+			res.end(JSON.stringify(data));
+		});
+	} catch (err){
+		res.end(JSON.stringify({ "description" : 'Description not available.'}));
+	}
+});
+
 app.get(/^(.+)$/, function(req,res){
 	if (fs.existsSync(__dirname+'/html/'+req.params[0]+'.html')) {
 		res.sendFile(req.params[0]+'.html', {root: path.join(__dirname, './html')});

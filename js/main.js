@@ -42,7 +42,6 @@ $.ajax({
 });
 
 $("#subjectSelect").change(function(){
-    console.log($('#subjectSelect :selected').text());
     $('#courseSelect')
     .find('option')
     .remove()
@@ -59,12 +58,42 @@ $("#subjectSelect").change(function(){
         url      : '/reqcourses',
         data     : { 'subj' : $('#subjectSelect :selected').text()},
         success  : function(data) {
-            console.log(data);
             for(var x=2; x<=data['courses'].length+1; x++){
                 $('#courseSelect').append($('<option>', {
                     value: x,
                     text: data['courses'][x-2]+' - '+data['titles'][x-2]
                 }));
+            }
+        }
+    });
+});
+
+$("#courseSelect").change(function(){
+    console.log($('#courseSelect :selected').text());
+    var subject=$('#subjectSelect :selected').text();
+    var course=$('#courseSelect :selected').text();
+    $('#courseTitle').html('<h3>'+subject+' '+course+"</h3>");
+    var courseData={};
+    courseData['courseSubject']=subject;
+    courseData['courseCode']=course.substring(0,course.indexOf('-')-1);
+    $.ajax({
+        type     : "POST",
+        cache    : false,
+        url      : '/reqdescript',
+        data     : courseData,
+        success  : function(data) {
+            console.log(data);
+            if (data.length==0){
+                $('#courseDescript').html('Description not available.');
+                $('#coursePrereq').html('');
+                $('#courseAntireq').html('');
+                $('#courseCoreq').html('');
+            } else{
+                console.log('whatt');
+                $('#courseDescript').html(data['description']);
+                $('#coursePrereq').html('Prerequisites: '+data['prerequisites']);
+                $('#courseAntireq').html('Antirequisites: '+data['antirequisites']);
+                $('#courseCoreq').html('Corequisites: '+data['corequisites']);
             }
         }
     });

@@ -17,8 +17,7 @@ methods.getOfferings = function(uwclient,id,callback) {
 		format : 'json'
 	},
 	function(err,res){
-		// console.log(res['data']);
-		callback(res['data']['terms_offered']);
+		callback(res['data']);
 	});
 };
 
