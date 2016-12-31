@@ -82,7 +82,6 @@ $("#courseSelect").change(function(){
         url      : '/reqdescript',
         data     : courseData,
         success  : function(data) {
-            console.log(data);
             if (data.length==0){
                 $('#courseDescript').html('Description not available.');
                 $('#coursePrereq').html('');
