@@ -1,30 +1,68 @@
-$('form').on('submit',function(e){
-	e.preventDefault();
-	for (var x=0; x<4; x++){
-		document.getElementById("o"+(x+1)).style.visibility = "hidden";
-	}
+function getCourseData(courseData){
     $.ajax({
         type     : "POST",
         cache    : false,
-        url      : $(this).attr('action'),
-        data     : $(this).serialize(),
+        url      : '/reqdescript',
+        data     : courseData,
         success  : function(data) {
-        	console.log(data);
-        	if (data.length==0){
-        		document.getElementById("o1").style.visibility = "visible";
-        		return;
-        	}
-        	if (data.indexOf('F')>-1)
-        		document.getElementById("o2").style.visibility = "visible";
-        	if (data.indexOf('W')>-1)
-        		document.getElementById("o3").style.visibility = "visible";
-        	if (data.indexOf('S')>-1)
-        		document.getElementById("o4").style.visibility = "visible";
-        },
-        error    : function () {
-        	document.getElementById("o1").style.visibility = "visible";
+            $('#coursedialogue').html('');
+            if (data.length==0){
+                $('#courseDescript').html('Description not available.');
+                $('#coursePrereq').html('');
+                $('#courseAntireq').html('');
+                $('#courseCoreq').html('');
+            } else{
+                $('#courseDescript').html(data['description']);
+                $('#coursePrereq').html('Prerequisites: '+data['prerequisites']);
+                $('#courseAntireq').html('Antirequisites: '+data['antirequisites']);
+                $('#courseCoreq').html('Corequisites: '+data['corequisites']);
+            }
         }
     });
+}
+
+function getCourseOfferrings(courseData){
+    for (var x=0; x<4; x++){
+        document.getElementById("o"+(x+1)).style.visibility = "hidden";
+    }
+    $.ajax({
+        type     : "POST",
+        cache    : false,
+        url      : '/reqoff',
+        data     : courseData,
+        success  : function(data) {
+            if (data=='invalid'){
+                $('#coursedialogue').html('Invalid course subject/code entered.');
+                $('#courseTitle').html('');
+                $('#courseDescript').html('');
+                $('#coursePrereq').html('');
+                $('#courseAntireq').html('');
+                $('#courseCoreq').html('');
+                return;
+            }
+            getCourseData(courseData);
+            if (data.length==0){
+                document.getElementById("o1").style.visibility = "visible";
+                return;
+            }
+            if (data.indexOf('F')>-1)
+                document.getElementById("o2").style.visibility = "visible";
+            if (data.indexOf('W')>-1)
+                document.getElementById("o3").style.visibility = "visible";
+            if (data.indexOf('S')>-1)
+                document.getElementById("o4").style.visibility = "visible";
+        },
+        error    : function () {
+            console.log('eror');
+            document.getElementById("o1").style.visibility = "visible";
+        }
+    });
+}
+
+$('form').on('submit',function(e){
+	e.preventDefault();
+    var courseData=$(this).serializeArray();
+    getCourseOfferrings($(this).serialize());
 });
 
 $.ajax({
@@ -75,25 +113,7 @@ $("#courseSelect").change(function(){
     var courseData={};
     courseData['courseSubject']=subject;
     courseData['courseCode']=course.substring(0,course.indexOf('-')-1);
-    $.ajax({
-        type     : "POST",
-        cache    : false,
-        url      : '/reqdescript',
-        data     : courseData,
-        success  : function(data) {
-            if (data.length==0){
-                $('#courseDescript').html('Description not available.');
-                $('#coursePrereq').html('');
-                $('#courseAntireq').html('');
-                $('#courseCoreq').html('');
-            } else{
-                $('#courseDescript').html(data['description']);
-                $('#coursePrereq').html('Prerequisites: '+data['prerequisites']);
-                $('#courseAntireq').html('Antirequisites: '+data['antirequisites']);
-                $('#courseCoreq').html('Corequisites: '+data['corequisites']);
-            }
-        }
-    });
+    getCourseOfferrings(courseData);
 });
 
 //coursetable setup and functions

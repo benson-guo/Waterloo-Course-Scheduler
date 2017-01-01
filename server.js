@@ -52,6 +52,7 @@ app.get('/', function(req,res){
 });
 
 app.post('/reqoff', function(req,res){
+	console.log(req.body);
 	res.setHeader('Content-Type', 'application/json');
 	var subj=req.body.courseSubject.toUpperCase();
 	var subc=req.body.courseCode.toUpperCase();
@@ -59,7 +60,7 @@ app.post('/reqoff', function(req,res){
 		res.end(JSON.stringify(subjects[subj][subc]['terms_offered']));
 	} catch (err) {
 		console.log('No information found on '+subj+subc+'.');
-		res.end(JSON.stringify([]));
+		res.end(JSON.stringify('invalid'));
 	}
 });
 
@@ -96,7 +97,9 @@ app.post('/reqcourses', function(req,res){
 app.post('/reqdescript', function(req,res){
 	res.setHeader('Content-Type', 'application/json');
 	try{
-		var requestedID = subjects[req.body.courseSubject][req.body.courseCode]['course_id'];
+		var subj=req.body.courseSubject.toUpperCase();
+		var subc=req.body.courseCode.toUpperCase();
+		var requestedID = subjects[subj][subc]['course_id'];
 		response.data.getOfferings(uwclient,requestedID,function(data){
 			if (data['prerequisites']==null)
                 data['prerequisites']='N/A';
