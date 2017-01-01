@@ -115,9 +115,8 @@ $("td").on("click", '#deletebutton', function(){
 
 $("td").on("click", '#addbutton', function(){
     var table=document.getElementById("coursetable");
-    var curSem=table.rows[0].cells[$(this).closest("td")[0].cellIndex].innerHTML[0];
+    var curSem=table.rows[0].cells[$(this).closest("td")[0].cellIndex].innerHTML;
     var td=$(this).closest("td");
-    console.log(curSem);
     var course=$('#courseSelect :selected').text();
     var subject=$('#subjectSelect :selected').text();
     if (course!='Choose Course'){
@@ -131,13 +130,16 @@ $("td").on("click", '#addbutton', function(){
             url      : '/reqoff',
             data     : courseData,
             success  : function(data) {
-                console.log(data);
-                if (data.indexOf(curSem)>-1)
+                if (data.indexOf(curSem[0])>-1){
                     td.html(courseData['courseSubject']+courseData['courseCode']+" <button id='deletebutton'>X</button>");
+                    $('#tabledialogue').html('Course succesfully added to '+curSem+'.')
+                }
                 else{
-                    console.log('Cant');
+                    $('#tabledialogue').html('Course not offerred in this semester.')
                 }
             }
         });
+    } else{
+        $('#tabledialogue').html('Please choose a course first.')
     }
 });
