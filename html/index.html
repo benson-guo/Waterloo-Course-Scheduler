@@ -16,83 +16,99 @@
 				This web application is meant to be a tool for planning when to take courses throughout your school and coop terms.</p>
 		    </center>
 		  </div>
-		  <div class="row">
-		  	<div class="col-sm-1"></div>
-			<div class="col-sm-5">
-				<div class="row">
-				  <div class="col-xs-2">
-				    <div class="form-group">
-				      <select class="selectpicker form-control" id="subjectSelect">
-				      	<option selected disabled>Choose Subject</option>
-				      </select>
-				    </div>
-				  </div>
-				  <div class="col-xs-3">
-				    <div class="form-group">
-				      <select class="selectpicker form-control" id="courseSelect">
-				      	<option selected disabled>Choose Course</option>
-				      </select>
-				    </div>
-				  </div>
-				</div>
-			</div>
-			<div class="col-sm-5">
-				<form action="/reqoff" method="post" id="courseForm">
-					<br> Subject <input type="text" name="courseSubject"> </br>
-					<br> Course Code <input type="text" name="courseCode"> </br>
-					<input type="submit" value="Submit">
-				</form>
-			</div>
-			<div class="col-sm-1"></div>
+	      <div class="row">
+	      	<div class="col-sm-2"></div>
+	      	<div class="col-sm-8">
+	      		<div class="panel panel-default">
+			      <div class="panel-heading">Course Selection - Select a course to view information and add it the course schedule</div>
+			      <div class="panel-body">
+			      	<div class="row">
+						<div class="col-sm-8">
+							<div class="row">
+							  <div class="col-xs-3">
+							    <div class="form-group">
+							      <select class="selectpicker form-control" id="subjectSelect">
+							      	<option selected disabled>Choose Subject</option>
+							      </select>
+							    </div>
+							  </div>
+							  <div class="col-xs-9">
+							    <div class="form-group">
+							      <select class="selectpicker form-control" id="courseSelect">
+							      	<option selected disabled>Choose Course</option>
+							      </select>
+							    </div>
+							  </div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<form action="/reqoff" method="post" id="courseForm">
+								Subject <input type="text" name="courseSubject"> <br><br>
+								Course Code <input type="text" name="courseCode">
+								<input type="submit" value="Submit">
+							</form>
+						</div>
+			        </div>
+			      	<div class="row">
+				      	<div class="col-sm-8">
+				      		<div id="courseTitle"></div>
+							<div id="courseDescript"></div>
+							<br>
+							<div id="coursePrereq"></div>
+							<div id="courseAntireq"></div>
+							<div id="courseCoreq"></div>
+				      	</div>
+				      	<div class="col-sm-4">
+				      		<div id="o1">
+								</a><b>Currently Unavailable / Invalid Course Code</b><br/>
+							</div>
+							<div id="o2">
+								</a><b>Fall</b><br/>
+							</div>
+							<div id="o3">
+								</a><b>Winter</b><br/>
+							</div>
+							<div id="o4">
+								</a><b>Spring</b><br/>
+							</div>
+				      	</div>
+			      	</div>
+			      </div>
+			    </div>
+	      	</div>
+	      	<div class="col-sm-2"></div>
 	      </div>
 		  <div class="col-sm-12">
-		  	<div id="tabledialogue"></div>
-			<table class="table" id="coursetable">
-			  <thead>
-			    <tr>
-			      <th>F - 1A</th>
-			      <th>W - 1B</th>
-			      <th>S - C1</th>
-			      <th>F - 2A</th>
-			      <th>W - 2B</th>
-			      <th>S - C2</th>
-			      <th>F - 3A</th>
-			      <th>W - C3</th>
-			      <th>S - 3B</th>
-			      <th>F - C4</th>
-			      <th>W - 4A</th>
-			      <th>S - C5</th>
-			      <th>F - C6</th>
-			      <th>W - 4B</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			  </tbody>
-			</table>
-			</div>
+		  	<div class="panel panel-default">
+		      <div class="panel-heading">Course Schedule</div>
+		      <div class="panel-body">
+		  		<div id="tabledialogue"></div>
+				<table class="table" id="coursetable">
+				  <thead>
+				    <tr>
+				      <th>F - 1A</th>
+				      <th>W - 1B</th>
+				      <th>S - C1</th>
+				      <th>F - 2A</th>
+				      <th>W - 2B</th>
+				      <th>S - C2</th>
+				      <th>F - 3A</th>
+				      <th>W - C3</th>
+				      <th>S - 3B</th>
+				      <th>F - C4</th>
+				      <th>W - 4A</th>
+				      <th>S - C5</th>
+				      <th>F - C6</th>
+				      <th>W - 4B</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				  </tbody>
+				</table>
+		      </div>
+		    </div>
+		  </div>
 	  	</div>
-			<h2>Offerings</h2>
-			<div id="o1">
-				</a><b>Currently Unavailable / Invalid Course Code</b><br/>
-			</div>
-			<div id="o2">
-				</a><b>Fall</b><br/>
-			</div>
-			<div id="o3">
-				</a><b>Winter</b><br/>
-			</div>
-			<div id="o4">
-				</a><b>Spring</b><br/>
-			</div>
-			<br>
-			<div id="courseTitle"></div>
-			<div id="courseDescript"></div>
-			<br>
-			<div id="coursePrereq"></div>
-			<div id="courseAntireq"></div>
-			<div id="courseCoreq"></div>
-			<br><br>
-			
 	</body>
 </html>
 
