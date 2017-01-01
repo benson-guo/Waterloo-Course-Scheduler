@@ -58,7 +58,8 @@ app.post('/reqoff', function(req,res){
 	try{
 		res.end(JSON.stringify(subjects[subj][subc]['terms_offered']));
 	} catch (err) {
-		res.end('No information found on '+subj+subc+'.');
+		console.log('No information found on '+subj+subc+'.');
+		res.end(JSON.stringify([]));
 	}
 });
 

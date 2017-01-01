@@ -69,7 +69,6 @@ $("#subjectSelect").change(function(){
 });
 
 $("#courseSelect").change(function(){
-    console.log($('#courseSelect :selected').text());
     var subject=$('#subjectSelect :selected').text();
     var course=$('#courseSelect :selected').text();
     $('#courseTitle').html('<h3>'+subject+' '+course+"</h3>");
@@ -88,7 +87,6 @@ $("#courseSelect").change(function(){
                 $('#courseAntireq').html('');
                 $('#courseCoreq').html('');
             } else{
-                console.log('whatt');
                 $('#courseDescript').html(data['description']);
                 $('#coursePrereq').html('Prerequisites: '+data['prerequisites']);
                 $('#courseAntireq').html('Antirequisites: '+data['antirequisites']);
@@ -116,5 +114,30 @@ $("td").on("click", '#deletebutton', function(){
 });
 
 $("td").on("click", '#addbutton', function(){
-    $(this).closest("td").html("Mark <button id='deletebutton'>X</button>");
+    var table=document.getElementById("coursetable");
+    var curSem=table.rows[0].cells[$(this).closest("td")[0].cellIndex].innerHTML[0];
+    var td=$(this).closest("td");
+    console.log(curSem);
+    var course=$('#courseSelect :selected').text();
+    var subject=$('#subjectSelect :selected').text();
+    if (course!='Choose Course'){
+        var courseData={};
+        courseData['courseSubject']=subject;
+        courseData['courseCode']=course.substring(0,course.indexOf('-')-1);
+        var termsOfferred=[];
+        $.ajax({
+            type     : "POST",
+            cache    : false,
+            url      : '/reqoff',
+            data     : courseData,
+            success  : function(data) {
+                console.log(data);
+                if (data.indexOf(curSem)>-1)
+                    td.html(courseData['courseSubject']+courseData['courseCode']+" <button id='deletebutton'>X</button>");
+                else{
+                    console.log('Cant');
+                }
+            }
+        });
+    }
 });
