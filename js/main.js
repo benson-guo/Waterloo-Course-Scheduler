@@ -98,12 +98,23 @@ $("#courseSelect").change(function(){
     });
 });
 
+//coursetable setup and functions
+function setup(){
+    var table=document.getElementById("coursetable");
+    var numCols=table.rows[0].cells.length;
+    for(var x=0; x<7; x++){
+        var row=table.insertRow(1);
+        for (var y=0; y<numCols; y++){
+            var cell = row.insertCell(y);
+            cell.innerHTML = "<button id='addbutton'>Add</button>";
+        }
+    }
+}
+setup();
 $("td").on("click", '#deletebutton', function(){
-    console.log($(this).closest("td").text());
    $(this).closest("td").html("<button id='addbutton'>Add</button>");
 });
 
 $("td").on("click", '#addbutton', function(){
-    console.log("the greatest");
     $(this).closest("td").html("Mark <button id='deletebutton'>X</button>");
 });

@@ -97,7 +97,6 @@ app.post('/reqdescript', function(req,res){
 	try{
 		var requestedID = subjects[req.body.courseSubject][req.body.courseCode]['course_id'];
 		response.data.getOfferings(uwclient,requestedID,function(data){
-			console.log(data);
 			if (data['prerequisites']==null)
                 data['prerequisites']='N/A';
             if (data['antirequisites']==null)
