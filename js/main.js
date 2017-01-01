@@ -98,6 +98,12 @@ $("#courseSelect").change(function(){
     });
 });
 
-$(".deleteMe").on("click", function(){
-   $(this).closest("td").remove();
+$("td").on("click", '#deletebutton', function(){
+    console.log($(this).closest("td").text());
+   $(this).closest("td").html("<button id='addbutton'>Add</button>");
+});
+
+$("td").on("click", '#addbutton', function(){
+    console.log("the greatest");
+    $(this).closest("td").html("Mark <button id='deletebutton'>X</button>");
 });
