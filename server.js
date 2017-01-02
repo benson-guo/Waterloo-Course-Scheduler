@@ -53,8 +53,8 @@ app.get('/', function(req,res){
 
 app.post('/reqoff', function(req,res){
 	res.setHeader('Content-Type', 'application/json');
-	var subj=req.body.courseSubject.toUpperCase();
-	var subc=req.body.courseCode.toUpperCase();
+	var subj=req.body.courseSubject.trim().toUpperCase();
+	var subc=req.body.courseCode.trim().toUpperCase();
 	try{
 		res.end(JSON.stringify(subjects[subj][subc]['terms_offered']));
 	} catch (err) {
@@ -96,8 +96,8 @@ app.post('/reqcourses', function(req,res){
 app.post('/reqdescript', function(req,res){
 	res.setHeader('Content-Type', 'application/json');
 	try{
-		var subj=req.body.courseSubject.toUpperCase();
-		var subc=req.body.courseCode.toUpperCase();
+		var subj=req.body.courseSubject.trim().toUpperCase();
+		var subc=req.body.courseCode.trim().toUpperCase();
 		var requestedID = subjects[subj][subc]['course_id'];
 		response.data.getOfferings(uwclient,requestedID,function(data){
 			if (data['prerequisites']==null)
