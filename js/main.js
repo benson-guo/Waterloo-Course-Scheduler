@@ -22,7 +22,7 @@ function getCourseData(courseSubject,courseCode,courseData){
     });
 }
 
-function getCourseOfferrings(courseSubject,courseCode,courseData){
+function getCourseOfferings(courseSubject,courseCode,courseData){
     for (var x=0; x<4; x++){
         document.getElementById("o"+(x+1)).style.visibility = "hidden";
     }
@@ -62,7 +62,7 @@ function getCourseOfferrings(courseSubject,courseCode,courseData){
 $('form').on('submit',function(e){
 	e.preventDefault();
     var courseData=$(this).serializeArray();
-    getCourseOfferrings(courseData[0].value,courseData[1].value,$(this).serialize());
+    getCourseOfferings(courseData[0].value,courseData[1].value,$(this).serialize());
 });
 
 $.ajax({
@@ -112,7 +112,7 @@ $("#courseSelect").change(function(){
     var courseData={};
     courseData['courseSubject']=subject;
     courseData['courseCode']=course.substring(0,course.indexOf('-')-1);
-    getCourseOfferrings(courseData['courseSubject'],courseData['courseCode'],courseData);
+    getCourseOfferings(courseData['courseSubject'],courseData['courseCode'],courseData);
 });
 
 //coursetable setup and functions
@@ -141,7 +141,6 @@ $("td").on("click", '#addbutton', function(){
         var courseData={};
         courseData['courseSubject']=course.substring(0,course.indexOf(' '));
         courseData['courseCode']=course.substring(course.indexOf(' ')+1,course.length-1);
-        var termsOfferred=[];
         $.ajax({
             type     : "POST",
             cache    : false,
@@ -153,7 +152,7 @@ $("td").on("click", '#addbutton', function(){
                     $('#tabledialogue').html('Course succesfully added to '+curSem+'.')
                 }
                 else{
-                    $('#tabledialogue').html('Course not offerred in this semester.')
+                    $('#tabledialogue').html('Course not offered in this semester.')
                 }
             }
         });

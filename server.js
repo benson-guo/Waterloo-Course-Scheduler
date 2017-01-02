@@ -32,13 +32,13 @@ response.data.getCourseList(uwclient,function(data){
 		subjects[nextSub][nextCN]['terms_offered']=[];
 	}
 	response.data.getTermCourses(uwclient,config.FALL,function(data){
-		response.data.updateTermsOfferred(data,subjects,'F');
+		response.data.updateTermsOffered(data,subjects,'F');
 	});
 	response.data.getTermCourses(uwclient,config.WINTER,function(data){
-		response.data.updateTermsOfferred(data,subjects,'W');
+		response.data.updateTermsOffered(data,subjects,'W');
 	});
 	response.data.getTermCourses(uwclient,config.SPRING,function(data){
-		response.data.updateTermsOfferred(data,subjects,'S');
+		response.data.updateTermsOffered(data,subjects,'S');
 	});
 });
 

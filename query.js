@@ -32,7 +32,7 @@ methods.getTermCourses = function(uwclient,term,callback) {
 	});
 };
 
-methods.updateTermsOfferred = function(data,subjects,t){
+methods.updateTermsOffered = function(data,subjects,t){
 	for (var i in data){
 		var nextSub=data[i]['subject'];
 		var nextCN=data[i]['catalog_number'];
