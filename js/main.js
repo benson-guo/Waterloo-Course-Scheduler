@@ -1,4 +1,4 @@
-function getCourseData(courseData){
+function getCourseData(courseSubject,courseCode,courseData){
     $.ajax({
         type     : "POST",
         cache    : false,
@@ -6,6 +6,7 @@ function getCourseData(courseData){
         data     : courseData,
         success  : function(data) {
             $('#coursedialogue').html('');
+            $('#courseTitle').html('<h3>'+courseSubject.toUpperCase()+' '+courseCode.toUpperCase()+' - '+data['title']+"</h3>");
             if (data.length==0){
                 $('#courseDescript').html('Description not available.');
                 $('#coursePrereq').html('');
@@ -21,7 +22,7 @@ function getCourseData(courseData){
     });
 }
 
-function getCourseOfferrings(courseData){
+function getCourseOfferrings(courseSubject,courseCode,courseData){
     for (var x=0; x<4; x++){
         document.getElementById("o"+(x+1)).style.visibility = "hidden";
     }
@@ -40,7 +41,7 @@ function getCourseOfferrings(courseData){
                 $('#courseCoreq').html('');
                 return;
             }
-            getCourseData(courseData);
+            getCourseData(courseSubject,courseCode,courseData);
             if (data.length==0){
                 document.getElementById("o1").style.visibility = "visible";
                 return;
@@ -53,7 +54,6 @@ function getCourseOfferrings(courseData){
                 document.getElementById("o4").style.visibility = "visible";
         },
         error    : function () {
-            console.log('eror');
             document.getElementById("o1").style.visibility = "visible";
         }
     });
@@ -62,7 +62,7 @@ function getCourseOfferrings(courseData){
 $('form').on('submit',function(e){
 	e.preventDefault();
     var courseData=$(this).serializeArray();
-    getCourseOfferrings($(this).serialize());
+    getCourseOfferrings(courseData[0].value,courseData[1].value,$(this).serialize());
 });
 
 $.ajax({
@@ -109,11 +109,10 @@ $("#subjectSelect").change(function(){
 $("#courseSelect").change(function(){
     var subject=$('#subjectSelect :selected').text();
     var course=$('#courseSelect :selected').text();
-    $('#courseTitle').html('<h3>'+subject+' '+course+"</h3>");
     var courseData={};
     courseData['courseSubject']=subject;
     courseData['courseCode']=course.substring(0,course.indexOf('-')-1);
-    getCourseOfferrings(courseData);
+    getCourseOfferrings(courseData['courseSubject'],courseData['courseCode'],courseData);
 });
 
 //coursetable setup and functions
@@ -137,12 +136,11 @@ $("td").on("click", '#addbutton', function(){
     var table=document.getElementById("coursetable");
     var curSem=table.rows[0].cells[$(this).closest("td")[0].cellIndex].innerHTML;
     var td=$(this).closest("td");
-    var course=$('#courseSelect :selected').text();
-    var subject=$('#subjectSelect :selected').text();
-    if (course!='Choose Course'){
+    var course=$('#courseTitle').html().substring(4,$('#courseTitle').html().indexOf('-'));
+    if (course!=''){
         var courseData={};
-        courseData['courseSubject']=subject;
-        courseData['courseCode']=course.substring(0,course.indexOf('-')-1);
+        courseData['courseSubject']=course.substring(0,course.indexOf(' '));
+        courseData['courseCode']=course.substring(course.indexOf(' ')+1,course.length-1);
         var termsOfferred=[];
         $.ajax({
             type     : "POST",

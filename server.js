@@ -52,7 +52,6 @@ app.get('/', function(req,res){
 });
 
 app.post('/reqoff', function(req,res){
-	console.log(req.body);
 	res.setHeader('Content-Type', 'application/json');
 	var subj=req.body.courseSubject.toUpperCase();
 	var subc=req.body.courseCode.toUpperCase();
