@@ -119,8 +119,13 @@ $("#courseSelect").change(function(){
 function setup(){
     var table=document.getElementById("coursetable");
     var numCols=table.rows[0].cells.length;
+    var row=table.insertRow(1);
+    for (var y=0; y<numCols; y++){
+            var cell = row.insertCell(y);
+            cell.innerHTML = "<input type='checkbox' name='text1' value='value1' />";
+        }
     for(var x=0; x<7; x++){
-        var row=table.insertRow(1);
+        row=table.insertRow(2);
         for (var y=0; y<numCols; y++){
             var cell = row.insertCell(y);
             cell.innerHTML = "<button id='addbutton'>Add</button>";
@@ -128,6 +133,7 @@ function setup(){
     }
 }
 setup();
+
 $("td").on("click", '#deletebutton', function(){
    $(this).closest("td").html("<button id='addbutton'>Add</button>");
 });
