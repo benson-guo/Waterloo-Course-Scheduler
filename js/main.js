@@ -117,22 +117,61 @@ $("#courseSelect").change(function(){
 
 //coursetable setup and functions
 function setup(){
+    document.getElementById('studyTerms').value = '8';
+    document.getElementById('offTerms').value = '6';
+    createTable(8,6);
+    // for (var x=table.rows.length-1; x>0; x--) {
+    //    table.deleteRow(x);
+    // }
+}
+setup();
+
+function createTable(study,work){
     var table=document.getElementById("coursetable");
-    var numCols=table.rows[0].cells.length;
-    var row=table.insertRow(1);
-    for (var y=0; y<numCols; y++){
-            var cell = row.insertCell(y);
-            cell.innerHTML = "<input type='checkbox' name='text1' value='value1' />";
+    var cols=study+work;
+    var defaultCheck=[2,5,7,9,11,12];
+    var semesters=['F','W','S'];
+    var headers=[];
+    var workterms=0;
+    var studyterms=0;
+    for (var x=0; x<cols ; x++){
+        if (defaultCheck.indexOf(x)>-1){
+            workterms++;
+            headers[x]=semesters[x%3]+" - W"+workterms;
         }
+        else{
+            studyterms++;
+            var suffix;
+            var term;
+            if (studyterms%2==1) {
+                term=(studyterms+1)/2;
+                suffix='A'
+            } else {
+                term=studyterms/2;
+                suffix='B';
+            }
+            headers[x]=semesters[x%3]+" - "+term+suffix;
+        }
+    }
+    for (var x=0; x<cols ; x++){
+        $("#coursetable thead tr").append("<th>"+headers[x]+"</th>");
+    }
+    var row=table.insertRow(1);
+    for (var y=0; y<cols; y++){
+        var cell = row.insertCell(y);
+        if (defaultCheck.indexOf(y)>-1)
+            cell.innerHTML = "<input type='checkbox' id='checkbox"+y+"'' checked />";
+        else
+            cell.innerHTML = "<input type='checkbox' id='checkbox"+y+"'' />";
+    }
     for(var x=0; x<7; x++){
         row=table.insertRow(2);
-        for (var y=0; y<numCols; y++){
+        for (var y=0; y<cols; y++){
             var cell = row.insertCell(y);
             cell.innerHTML = "<button id='addbutton'>Add</button>";
         }
     }
 }
-setup();
 
 $("td").on("click", '#deletebutton', function(){
    $(this).closest("td").html("<button id='addbutton'>Add</button>");
@@ -164,5 +203,14 @@ $("td").on("click", '#addbutton', function(){
         });
     } else{
         $('#tabledialogue').html('Please choose a course first.')
+    }
+});
+
+$('input[type="checkbox"]').click(function(){
+    if($(this).prop("checked") == true){
+        console.log("Checkbox is checked.");
+    }
+    else if($(this).prop("checked") == false){
+        console.log("Checkbox is unchecked.");
     }
 });
