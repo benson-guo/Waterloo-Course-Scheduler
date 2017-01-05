@@ -1,0 +1,7 @@
+rounded edges
+colour headers
+change colouring
+shorten subheader
+hide work term button
+export tabel to pdf
+save
