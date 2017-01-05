@@ -167,13 +167,13 @@ function createTable(study,work,defaultCheck){
         row=table.insertRow(2);
         for (var y=0; y<cols; y++){
             var cell = row.insertCell(y);
-            cell.innerHTML = "<button id='addbutton'>Add</button>";
+            cell.innerHTML = "<button type = 'button' class = 'btn btn-success' id='addbutton'>Add</button>";
         }
     }
 }
 
 $("td").on("click", '#deletebutton', function(){
-   $(this).closest("td").html("<button id='addbutton'>Add</button>");
+   $(this).closest("td").html("<button type = 'button' class = 'btn btn-success' id='addbutton'>Add</button>");
 });
 
 $("td").on("click", '#addbutton', function(){
@@ -192,7 +192,7 @@ $("td").on("click", '#addbutton', function(){
             data     : courseData,
             success  : function(data) {
                 if (data.indexOf(curSem[0])>-1){
-                    td.html(courseData['courseSubject']+courseData['courseCode']+" <button id='deletebutton'>X</button>");
+                    td.html(courseData['courseSubject']+courseData['courseCode']+" <button type = 'button' class = 'btn btn-danger' id='deletebutton'>X</button>");
                     $('#tabledialogue').html('Course succesfully added to '+curSem+'.');
                 }
                 else{
