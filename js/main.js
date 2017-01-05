@@ -59,7 +59,7 @@ function getCourseOfferings(courseSubject,courseCode,courseData){
     });
 }
 
-$('form').on('submit',function(e){
+$('#courseForm').on('submit',function(e){
 	e.preventDefault();
     var courseData=$(this).serializeArray();
     getCourseOfferings(courseData[0].value,courseData[1].value,$(this).serialize());
@@ -119,17 +119,16 @@ $("#courseSelect").change(function(){
 function setup(){
     document.getElementById('studyTerms').value = '8';
     document.getElementById('offTerms').value = '6';
-    createTable(8,6);
+    createTable(8,6,[2,5,7,9,11,12]);
     // for (var x=table.rows.length-1; x>0; x--) {
     //    table.deleteRow(x);
     // }
 }
 setup();
 
-function createTable(study,work){
+function createTable(study,work,defaultCheck){
     var table=document.getElementById("coursetable");
     var cols=study+work;
-    var defaultCheck=[2,5,7,9,11,12];
     var semesters=['F','W','S'];
     var headers=[];
     var workterms=0;
@@ -194,15 +193,15 @@ $("td").on("click", '#addbutton', function(){
             success  : function(data) {
                 if (data.indexOf(curSem[0])>-1){
                     td.html(courseData['courseSubject']+courseData['courseCode']+" <button id='deletebutton'>X</button>");
-                    $('#tabledialogue').html('Course succesfully added to '+curSem+'.')
+                    $('#tabledialogue').html('Course succesfully added to '+curSem+'.');
                 }
                 else{
-                    $('#tabledialogue').html('Course not offered in this semester.')
+                    $('#tabledialogue').html('Course not offered in this semester.');
                 }
             }
         });
     } else{
-        $('#tabledialogue').html('Please choose a course first.')
+        $('#tabledialogue').html('Please choose a course first.');
     }
 });
 
@@ -214,3 +213,12 @@ $('input[type="checkbox"]').click(function(){
         console.log("Checkbox is unchecked.");
     }
 });
+
+$("#tableForm").on('submit',(function(e) {
+    e.preventDefault();
+    console.log("wtf");
+    var val = $("input[type=submit][clicked=true]").val()
+
+    console.log(e);
+
+}));

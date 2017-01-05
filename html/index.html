@@ -92,7 +92,7 @@
 		      <div class="panel-heading">Course Schedule</div>
 		      <div class="panel-body">
 		      <center>
-		      <form class="form-inline" action="/reqoff" method="post" id="tableForm">
+		      <form class="form-inline" id="tableForm">
 				  <div class="form-group">
 				    <label>Study Terms :</label>
 				    <input type="text" class="form-control" name="studyTerms" id="studyTerms">
@@ -101,8 +101,8 @@
 				    <label>Work / Off Terms :</label>
 				    <input type="text" class="form-control" name="offTerms" id="offTerms">
 				  </div>
-				  <button type="submit" class="btn btn-default">Recreate Table</button>
-				  <button type="submit" class="btn btn-default">Recreate Headers</button>
+				  <button type="submit" class="btn btn-default" id="recreatetable">Recreate Table</button>
+				  <button type="submit" class="btn btn-default" id="recreateheader">Recreate Headers</button>
 			  </form>
 			  </center>
 			  	<p>Enter the number of study and work/off terms you have. Then check off the corresponding work term semesters to customize the table.</p>
