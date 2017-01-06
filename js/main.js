@@ -123,6 +123,24 @@ function setup(){
 }
 setup();
 
+var checkboxAction=function() {
+    var cols=$("#coursetable").find('tr')[0].cells.length;
+    var countChecked=0;
+    var workTermsIndices=[];
+    for (var x=0; x<cols ; x++){
+        if ($("#checkbox"+x).prop("checked") == true){
+            workTermsIndices.push(x);
+            countChecked++;
+        }
+    }
+    console.log(countChecked);
+    var distribution=getTermDistriubtion();
+    if (countChecked==distribution[1]){
+        resetTable();
+        createTable(distribution[0],distribution[1],workTermsIndices);
+    }
+};
+
 function createTable(study,work,defaultCheck){
     var table=document.getElementById("coursetable");
     var cols=study+work;
@@ -167,6 +185,7 @@ function createTable(study,work,defaultCheck){
             cell.innerHTML = "<button type = 'button' class = 'btn btn-success' id='addbutton'>Add</button>";
         }
     }
+    $('input[type="checkbox"]').click(checkboxAction);
 }
 
 $("td").on("click", '#deletebutton', function(){
@@ -202,14 +221,25 @@ $("td").on("click", '#addbutton', function(){
     }
 });
 
-$('input[type="checkbox"]').click(function(){
-    if($(this).prop("checked") == true){
-        console.log("Checkbox is checked.");
+function getTermDistriubtion(){
+    var cols=$("#coursetable").find('tr')[0].cells.length;
+    var distribution=[0,0];
+    for (var x=0; x<cols; x++){
+        var header=$("#coursetable").find('tr')[0].cells[x].innerHTML;
+        if (header[header.indexOf('-')+2]=='W')
+            distribution[1]++;
+        else
+            distribution[0]++;
     }
-    else if($(this).prop("checked") == false){
-        console.log("Checkbox is unchecked.");
-    }
-});
+    return distribution;
+}
+
+// div wrapper resets table html
+function resetTable(){
+    $("#tablewrapper").html("<table class='table' id='coursetable'> <thead> <tr> </tr> </thead> <tbody> </tbody> </table>");
+}
+
+$('input[type="checkbox"]').click(checkboxAction);
 
 $("#tableForm").on('submit',(function(e) {
     e.preventDefault();
@@ -238,7 +268,6 @@ $("#tableForm").on('submit',(function(e) {
             }
         }
     }
-    // div wrapper resets table html
-    $("#tablewrapper").html("<table class='table' id='coursetable'> <thead> <tr> </tr> </thead> <tbody> </tbody> </table>");
+    resetTable();
     createTable(studyTerms,workTerms,workTermsIndices);
 }));
