@@ -120,9 +120,6 @@ function setup(){
     document.getElementById('studyTerms').value = '8';
     document.getElementById('offTerms').value = '6';
     createTable(8,6,[2,5,7,9,11,12]);
-    // for (var x=table.rows.length-1; x>0; x--) {
-    //    table.deleteRow(x);
-    // }
 }
 setup();
 
@@ -216,9 +213,32 @@ $('input[type="checkbox"]').click(function(){
 
 $("#tableForm").on('submit',(function(e) {
     e.preventDefault();
-    console.log("wtf");
-    var val = $("input[type=submit][clicked=true]").val()
-
-    console.log(e);
-
+    var table=document.getElementById("coursetable");
+    var studyTerms=Number($(this).serializeArray()[0].value);
+    var workTerms=Number($(this).serializeArray()[1].value);
+    var workTermsIndices=[];
+    // if standard work/study, default to sequence 2
+    if (workTerms==6 && studyTerms==8){
+        workTermsIndices=[2,5,7,9,11,12];
+    }
+    // otherwise, make first coop the 2nd index, every even index after that. If more are required ,go back to the beginning and push odd numbers
+    else {
+        var index=2;
+        var count=0;
+        var cols=studyTerms+workTerms;
+        while (index<cols && count<workTerms){
+            workTermsIndices.push(index);
+            index+=2;
+            count++;
+        }
+        for (var x=0; x<cols; x++){
+            if (workTermsIndices.indexOf(x)<0 && count<workTerms){
+                workTermsIndices.push(x);
+                count++;
+            }
+        }
+    }
+    // div wrapper resets table html
+    $("#tablewrapper").html("<table class='table' id='coursetable'> <thead> <tr> </tr> </thead> <tbody> </tbody> </table>");
+    createTable(studyTerms,workTerms,workTermsIndices);
 }));
