@@ -305,7 +305,7 @@ $( "#save" ).click(function() {
   localStorage.setItem('cells', JSON.stringify(cells));
 });
 
-$( "#load" ).click(function() {
+$("#load").click(function() {
     var cells=localStorage.getItem('cells');
     if (cells==null){
         $('#tabledialogue').html('Nothing saved.');
