@@ -1,6 +1,4 @@
-rounded edges
 colour headers
 change colouring
 hide work term button
-export tabel to pdf
-save
+export table to pdf
