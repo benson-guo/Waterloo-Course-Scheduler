@@ -12,7 +12,6 @@ var fs = require('fs');
 var app = express();
 var bodyParser = require('body-parser');
 
-var portTest = 9000;
 var port = 8080;
 
 var subjects={}
