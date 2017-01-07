@@ -119,7 +119,7 @@ $("#courseSelect").change(function(){
 function setup(){
     document.getElementById('studyTerms').value = '8';
     document.getElementById('offTerms').value = '6';
-    createTable(8,6,[2,5,7,9,11,12]);
+    createTable(8,6,[2,5,7,9,11,12],[]);
 }
 setup();
 
@@ -133,15 +133,54 @@ var checkboxAction=function() {
             countChecked++;
         }
     }
-    console.log(countChecked);
     var distribution=getTermDistriubtion();
     if (countChecked==distribution[1]){
         resetTable();
-        createTable(distribution[0],distribution[1],workTermsIndices);
+        createTable(distribution[0],distribution[1],workTermsIndices,[]);
+        resetButtons();
     }
 };
 
-function createTable(study,work,defaultCheck){
+var addButtonAction=function() {
+    var table=document.getElementById("coursetable");
+    var curSem=table.rows[0].cells[$(this).closest("td")[0].cellIndex].innerHTML;
+    var td=$(this).closest("td");
+    var course=$('#courseTitle').html().substring(4,$('#courseTitle').html().indexOf('-'));
+    if (course!=''){
+        var courseData={};
+        courseData['courseSubject']=course.substring(0,course.indexOf(' '));
+        courseData['courseCode']=course.substring(course.indexOf(' ')+1,course.length-1);
+        $.ajax({
+            type     : "POST",
+            cache    : false,
+            url      : '/reqoff',
+            data     : courseData,
+            success  : function(data) {
+                if (data.indexOf(curSem[0])>-1){
+                    td.html(courseData['courseSubject']+courseData['courseCode']+" <button type = 'button' class = 'btn btn-danger' id='deletebutton'>X</button>");
+                    $('#tabledialogue').html('Course succesfully added to '+curSem+'.');
+                }
+                else{
+                    $('#tabledialogue').html('Course not offered in this semester.');
+                }
+            }
+        });
+    } else{
+        $('#tabledialogue').html('Please choose a course first.');
+    }
+};
+
+var deleteButtonAction=function() {
+    $(this).closest("td").html("<button type = 'button' class = 'btn btn-success' id='addbutton'>Add</button>");
+};
+
+function resetButtons(){
+    $("td").on("click", '#deletebutton', deleteButtonAction);
+    $("td").on("click", '#addbutton', addButtonAction);
+    $('input[type="checkbox"]').click(checkboxAction);
+}
+
+function createTable(study,work,defaultCheck,cells){
     var table=document.getElementById("coursetable");
     var cols=study+work;
     var semesters=['F','W','S'];
@@ -179,47 +218,18 @@ function createTable(study,work,defaultCheck){
             cell.innerHTML = "<input type='checkbox' id='checkbox"+y+"'' />";
     }
     for(var x=0; x<7; x++){
-        row=table.insertRow(2);
+        row=table.insertRow(x+2);
         for (var y=0; y<cols; y++){
             var cell = row.insertCell(y);
-            cell.innerHTML = "<button type = 'button' class = 'btn btn-success' id='addbutton'>Add</button>";
+            if (cells.length>0)
+                cell.innerHTML = cells[x][y];
+            else
+                cell.innerHTML = "<button type = 'button' class = 'btn btn-success' id='addbutton'>Add</button>";
         }
     }
-    $('input[type="checkbox"]').click(checkboxAction);
 }
 
-$("td").on("click", '#deletebutton', function(){
-   $(this).closest("td").html("<button type = 'button' class = 'btn btn-success' id='addbutton'>Add</button>");
-});
-
-$("td").on("click", '#addbutton', function(){
-    var table=document.getElementById("coursetable");
-    var curSem=table.rows[0].cells[$(this).closest("td")[0].cellIndex].innerHTML;
-    var td=$(this).closest("td");
-    var course=$('#courseTitle').html().substring(4,$('#courseTitle').html().indexOf('-'));
-    if (course!=''){
-        var courseData={};
-        courseData['courseSubject']=course.substring(0,course.indexOf(' '));
-        courseData['courseCode']=course.substring(course.indexOf(' ')+1,course.length-1);
-        $.ajax({
-            type     : "POST",
-            cache    : false,
-            url      : '/reqoff',
-            data     : courseData,
-            success  : function(data) {
-                if (data.indexOf(curSem[0])>-1){
-                    td.html(courseData['courseSubject']+courseData['courseCode']+" <button type = 'button' class = 'btn btn-danger' id='deletebutton'>X</button>");
-                    $('#tabledialogue').html('Course succesfully added to '+curSem+'.');
-                }
-                else{
-                    $('#tabledialogue').html('Course not offered in this semester.');
-                }
-            }
-        });
-    } else{
-        $('#tabledialogue').html('Please choose a course first.');
-    }
-});
+resetButtons();
 
 function getTermDistriubtion(){
     var cols=$("#coursetable").find('tr')[0].cells.length;
@@ -269,5 +279,48 @@ $("#tableForm").on('submit',(function(e) {
         }
     }
     resetTable();
-    createTable(studyTerms,workTerms,workTermsIndices);
+    createTable(studyTerms,workTerms,workTermsIndices,[]);
+    resetButtons();
 }));
+
+$( "#save" ).click(function() {
+  $('#tabledialogue').html('Current table saved.');
+  var distribution=getTermDistriubtion();
+  var cols=distribution[0]+distribution[1];
+  var workTermsIndices=[];
+  for (var x=0; x<cols ; x++){
+      if ($("#checkbox"+x).prop("checked") == true){
+          workTermsIndices.push(x);
+      }
+  }
+  var cells=[];
+  for(var x=2 ; x<=8; x++){
+    cells.push([]);
+    for (var y=0; y<cols ; y++){
+        cells[x-2].push($("#coursetable").find('tr')[x].cells[y].innerHTML);
+    }
+  }
+  localStorage.setItem('distribution', JSON.stringify(distribution));
+  localStorage.setItem('workTermsIndices', JSON.stringify(workTermsIndices));
+  localStorage.setItem('cells', JSON.stringify(cells));
+});
+
+$( "#load" ).click(function() {
+    var cells=localStorage.getItem('cells');
+    if (cells==null){
+        $('#tabledialogue').html('Nothing saved.');
+    } else{
+        cells=JSON.parse(cells);
+        var distribution=JSON.parse(localStorage.getItem('distribution'));
+        var workTermsIndices=JSON.parse(localStorage.getItem('workTermsIndices'));
+        var study=distribution[0];
+        var work=distribution[1];
+        var cols=study+work;
+        document.getElementById('studyTerms').value = study;
+        document.getElementById('offTerms').value = work;
+        resetTable();
+        createTable(study,work,workTermsIndices,cells);
+        $('#tabledialogue').html('Loaded saved table.');
+        resetButtons();
+    }
+});
