@@ -30,11 +30,14 @@ response.data.getCourseList(uwclient,function(data){
 		subjects[nextSub][nextCN]['course_id']=data[i]['course_id'];
 		subjects[nextSub][nextCN]['terms_offered']=[];
 	}
+	console.log('done');
 	updateTermCourses();
 });
 
 function updateTermCourses(){
+	console.log('updating');
 	response.data.getTermCourses(uwclient,config.FALL,function(data){
+	console.log(data);
 		response.data.updateTermsOffered(data,subjects,'F');
 	});
 	response.data.getTermCourses(uwclient,config.WINTER,function(data){
