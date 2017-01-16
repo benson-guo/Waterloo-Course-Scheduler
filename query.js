@@ -36,6 +36,7 @@ methods.updateTermsOffered = function(data,subjects,t){
 	for (var i in data){
 		var nextSub=data[i]['subject'];
 		var nextCN=data[i]['catalog_number'];
+		console.log(data[i]);
 		try{
 			subjects[nextSub][nextCN]['terms_offered'].push(t);
 		} catch (err){

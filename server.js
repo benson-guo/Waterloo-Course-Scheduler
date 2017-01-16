@@ -30,10 +30,6 @@ response.data.getCourseList(uwclient,function(data){
 		subjects[nextSub][nextCN]['course_id']=data[i]['course_id'];
 		subjects[nextSub][nextCN]['terms_offered']=[];
 	}
-	updateTermCourses();
-});
-
-function updateTermCourses(){
 	response.data.getTermCourses(uwclient,config.FALL,function(data){
 		response.data.updateTermsOffered(data,subjects,'F');
 	});
@@ -43,7 +39,8 @@ function updateTermCourses(){
 	response.data.getTermCourses(uwclient,config.SPRING,function(data){
 		response.data.updateTermsOffered(data,subjects,'S');
 	});
-}
+});
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -58,7 +55,6 @@ app.post('/reqoff', function(req,res){
 	res.setHeader('Content-Type', 'application/json');
 	var subj=req.body.courseSubject.trim().toUpperCase();
 	var subc=req.body.courseCode.trim().toUpperCase();
-	console.log(subjects[subj][subc]);
 	try{
 		res.end(JSON.stringify(subjects[subj][subc]['terms_offered']));
 	} catch (err) {
