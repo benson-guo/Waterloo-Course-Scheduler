@@ -54,6 +54,7 @@ app.post('/reqoff', function(req,res){
 	res.setHeader('Content-Type', 'application/json');
 	var subj=req.body.courseSubject.trim().toUpperCase();
 	var subc=req.body.courseCode.trim().toUpperCase();
+	console.log(subjects[subj][subc]);
 	try{
 		res.end(JSON.stringify(subjects[subj][subc]['terms_offered']));
 	} catch (err) {
