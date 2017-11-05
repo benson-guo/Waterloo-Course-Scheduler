@@ -12,7 +12,7 @@ var fs = require('fs');
 var app = express();
 var bodyParser = require('body-parser');
 
-var port = 8080;
+var port = process.env.PORT || 8080;
 
 var subjects={}
 
@@ -123,7 +123,7 @@ app.get(/^(.+)$/, function(req,res){
 });
 
 var listen = function(){
-	console.log('Listening!');
+	console.log('Listening! Port:%s',port);
 }
 
 app.listen(port,listen);
