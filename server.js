@@ -3,7 +3,7 @@ var uwaterlooApi = require('uwaterloo-api');
 
 var config = require('./config.json');
 var uwclient = new uwaterlooApi({
-	API_KEY : config.api_key
+	API_KEY : process.env.api_key || config.api_key
 });
 var response = require('./query.js');
 var express = require('express');
@@ -30,13 +30,13 @@ response.data.getCourseList(uwclient,function(data){
 		subjects[nextSub][nextCN]['course_id']=data[i]['course_id'];
 		subjects[nextSub][nextCN]['terms_offered']=[];
 	}
-	response.data.getTermCourses(uwclient,config.FALL,function(data){
+	response.data.getTermCourses(uwclient,process.env.FALL || config.FALL,function(data){
 		response.data.updateTermsOffered(data,subjects,'F');
 	});
-	response.data.getTermCourses(uwclient,config.WINTER,function(data){
+	response.data.getTermCourses(uwclient,process.env.WINTER || config.WINTER,function(data){
 		response.data.updateTermsOffered(data,subjects,'W');
 	});
-	response.data.getTermCourses(uwclient,config.SPRING,function(data){
+	response.data.getTermCourses(uwclient,process.env.SPRING,function(data){
 		response.data.updateTermsOffered(data,subjects,'S');
 	});
 
