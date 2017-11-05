@@ -1,7 +1,12 @@
 var http = require('http');
 var uwaterlooApi = require('uwaterloo-api');
 
-var config = require('./config.json');
+var config;
+try {
+	config = require('./config.json');
+} catch (e){
+	console.log(e);
+}
 var uwclient = new uwaterlooApi({
 	API_KEY : process.env.api_key || config.api_key
 });
