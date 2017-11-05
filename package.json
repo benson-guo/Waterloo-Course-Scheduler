@@ -4,10 +4,10 @@
   "description": "This application is a tool to aid course planning.",
   "main": "query.js",
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "nodemon": "^1.11.0",
-    "uwaterloo-api": "^1.0.2"
+    "body-parser": "1.15.2",
+    "express": "4.14.0",
+    "nodemon": "1.11.0",
+    "uwaterloo-api": "1.0.2"
   },
   "devDependencies": {},
   "scripts": {
